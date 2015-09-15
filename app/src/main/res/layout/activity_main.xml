@@ -47,13 +47,20 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <com.baoyz.widget.PullRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/events_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:paddingTop="20dp">
         </android.support.v7.widget.RecyclerView>
+
+    </com.baoyz.widget.PullRefreshLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/search_button"
