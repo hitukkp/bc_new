@@ -1,5 +1,7 @@
 package com.bikerscalender;
 
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -19,11 +21,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.LogRecord;
 
-public class MainActivity extends AppCompatActivity {
+import cn.bingoogolapple.refreshlayout.BGAMoocStyleRefreshViewHolder;
+import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
+import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
+import cn.bingoogolapple.refreshlayout.BGARefreshViewHolder;
+
+public class MainActivity extends AppCompatActivity implements BGARefreshLayout.BGARefreshLayoutDelegate {
 
     public RecyclerView eventsList;
     private EventListAdapter eventListAdapter;
-    public SwipeRefreshLayout swipeLayout;
+
+    private int mNewPageNumber = 0;
+    private int mMorePageNumber = 0;
+    private BGARefreshLayout mRefreshLayout;
+    protected ProgressDialog mLoadingDialog;
+
     public static Integer[] mThumbIds = {
             R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d , R.drawable.e , R.drawable.f , R.drawable.g , R.drawable.h, R.drawable.i, R.drawable.j, R.drawable.k, R.drawable.l,
             R.drawable.m, R.drawable.n, R.drawable.m, R.drawable.o, R.drawable.p, R.drawable.q, R.drawable.r, R.drawable.s, R.drawable.t, R.drawable.u, R.drawable.v, R.drawable.w,
@@ -58,23 +70,17 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Clicked pink Floating Action Button", Toast.LENGTH_SHORT).show();
             }
         });
+        mRefreshLayout = (BGARefreshLayout) findViewById(R.id.rl_modulename_refresh);
+        mRefreshLayout.setDelegate(this);
+        BGANormalRefreshViewHolder viewholder = new BGANormalRefreshViewHolder(this, true);
+        viewholder.setRefreshingText("");
+        viewholder.setPullDownRefreshText("");
+        viewholder.setReleaseRefreshText("");
+        mRefreshLayout.setRefreshViewHolder(viewholder);
 
-        final PullRefreshLayout layout = (PullRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-        layout.setRefreshStyle(PullRefreshLayout.STYLE_MATERIAL);/*
-        int arr[] = {android.R.color.holo_blue_bright, android.R.color.holo_green_light, android.R.color.holo_orange_light, android.R.color.holo_red_light};
-        layout.setColorSchemeColors(arr);*/
-        layout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        layout.setRefreshing(false);
-                    }
-                }, 1000);
-            }
-        });
-
+        mLoadingDialog = new ProgressDialog(this);
+        mLoadingDialog.setCanceledOnTouchOutside(false);
+        mLoadingDialog.setMessage("Loading...");
     }
 
     public static List<EventListData> getEventListData(){
@@ -113,5 +119,44 @@ public class MainActivity extends AppCompatActivity {
                 imageView.postDelayed(this, 20000); //set to go off again in 3 seconds.
             }
         }.run();
+    }
+
+    @Override
+    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout bgaRefreshLayout) {
+        mNewPageNumber++;
+        if (mNewPageNumber > 4) {
+            mRefreshLayout.endRefreshing();
+            showToast("There are no recent data the");
+            return;
+        }
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mRefreshLayout.endRefreshing();
+            }
+        }, 1000);
+    }
+
+    @Override
+    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout bgaRefreshLayout) {
+        mNewPageNumber++;
+        if (mNewPageNumber > 5) {
+            mRefreshLayout.endLoadingMore();
+            showToast("No more data the");
+            return false;
+        }
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mRefreshLayout.endLoadingMore();
+            }
+        }, 1000);
+        return true;
+    }
+
+    protected void showToast(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 }
