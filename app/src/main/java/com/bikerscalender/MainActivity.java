@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
@@ -18,22 +19,20 @@ import java.util.List;
 import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
-public class MainActivity extends AppCompatActivity implements BGARefreshLayout.BGARefreshLayoutDelegate {
+public class MainActivity extends AppCompatActivity implements BGARefreshLayout.BGARefreshLayoutDelegate, FloatingActionButton.OnClickListener {
 
     public RecyclerView eventsList;
     private EventListAdapter eventListAdapter;
 
     private int mNewPageNumber = 0;
-    private int mMorePageNumber = 0;
     private BGARefreshLayout mRefreshLayout;
     protected ProgressDialog mLoadingDialog;
+    private View searcView;
+    private Button cancelSearchButton;
+    private FloatingActionButton searchFAB;
 
     public static Integer[] mThumbIds = {
-            R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d , R.drawable.e , R.drawable.f , R.drawable.g , R.drawable.h, R.drawable.i, R.drawable.j, R.drawable.k, R.drawable.l,
-            R.drawable.m, R.drawable.n, R.drawable.m, R.drawable.o, R.drawable.p, R.drawable.q, R.drawable.r, R.drawable.s, R.drawable.t, R.drawable.u, R.drawable.v, R.drawable.w,
-            R.drawable.x, R.drawable.y, R.drawable.z, R.drawable.ab, R.drawable.ac, R.drawable.ad, R.drawable.ae, R.drawable.af, R.drawable.ag, R.drawable.ah, R.drawable.ai,
-            R.drawable.aj, R.drawable.ak, R.drawable.al, R.drawable.am, R.drawable.an, R.drawable.ao, R.drawable.ap, R.drawable.aq, R.drawable.ar, R.drawable.as,
-            R.drawable.au, R.drawable.av
+            R.drawable.a, R.drawable.d, R.drawable.c
     };
 
     @Override
@@ -50,20 +49,20 @@ public class MainActivity extends AppCompatActivity implements BGARefreshLayout.
         final android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        searcView = findViewById(R.id.search_view_ll);
+
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle("Tourer");
         loadBackdrop();
 
-        FloatingActionButton searchFAB = (FloatingActionButton) findViewById(R.id.search_button);
-        searchFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Clicked pink Floating Action Button", Toast.LENGTH_SHORT).show();
-            }
-        });
+        searchFAB = (FloatingActionButton) findViewById(R.id.search_button);
+        searchFAB.setOnClickListener(this);
+
+        cancelSearchClick();
+
         mRefreshLayout = (BGARefreshLayout) findViewById(R.id.rl_modulename_refresh);
         mRefreshLayout.setDelegate(this);
-        BGANormalRefreshViewHolder viewholder = new BGANormalRefreshViewHolder(this, true);
+        BGANormalRefreshViewHolder viewholder = new BGANormalRefreshViewHolder(this, false); // false is to disable footer loading
         viewholder.setRefreshingText("");
         viewholder.setPullDownRefreshText("");
         viewholder.setReleaseRefreshText("");
@@ -95,11 +94,8 @@ public class MainActivity extends AppCompatActivity implements BGARefreshLayout.
 
     private void loadBackdrop() {
         final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
-
         final int[] i = {0};
-
         new Runnable(){
-
             @Override
             public void run(){
                 Glide.with( getBaseContext() ).load(mThumbIds[i[0]]).centerCrop().into(imageView);
@@ -110,6 +106,25 @@ public class MainActivity extends AppCompatActivity implements BGARefreshLayout.
                 imageView.postDelayed(this, 20000); //set to go off again in 3 seconds.
             }
         }.run();
+    }
+
+    public void cancelSearchClick(){
+        cancelSearchButton = (Button) findViewById(R.id.search_button_cancel);
+        cancelSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchFAB.setVisibility(View.VISIBLE);
+                searcView.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(searcView.getVisibility() == View.GONE) {
+            searchFAB.setVisibility(View.GONE);
+            searcView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -131,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements BGARefreshLayout.
 
     @Override
     public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout bgaRefreshLayout) {
-        mNewPageNumber++;
+        /*mNewPageNumber++;
         if (mNewPageNumber > 5) {
             mRefreshLayout.endLoadingMore();
             showToast("No more data the");
@@ -144,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements BGARefreshLayout.
                 mRefreshLayout.endLoadingMore();
             }
         }, 1000);
+        return true;*/
         return true;
     }
 

@@ -21,4 +21,17 @@
         <item name="android:windowBackground">@color/window_background</item>
     </style>
 
+    <style name="SearchLayout.Edit" parent="AppTheme">
+        <item name="android:autoText">false</item>
+        <item name="android:imeOptions">actionSearch</item>
+        <item name="android:drawableLeft">@drawable/search_icon_left</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:hint">@string/search_hint</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="SearchLayout.Button.Right" parent="AppTheme">
+            <item name="android:background">@drawable/button_selector</item>
+    </style>
+
+
 </resources>
