@@ -8,8 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
@@ -23,13 +27,15 @@ public class MainActivity extends AppCompatActivity implements BGARefreshLayout.
 
     public RecyclerView eventsList;
     private EventListAdapter eventListAdapter;
+    private List<EventListData> eventListData;
 
     private int mNewPageNumber = 0;
-    private BGARefreshLayout mRefreshLayout;
+    public BGARefreshLayout mRefreshLayout;
     protected ProgressDialog mLoadingDialog;
     private View searcView;
     private Button cancelSearchButton;
-    private FloatingActionButton searchFAB;
+    private EditText searchEditText;
+    public FloatingActionButton searchFAB;
 
     public static Integer[] mThumbIds = {
             R.drawable.a, R.drawable.d, R.drawable.c
@@ -59,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements BGARefreshLayout.
         searchFAB.setOnClickListener(this);
 
         cancelSearchClick();
+        textSearchListener();
 
         mRefreshLayout = (BGARefreshLayout) findViewById(R.id.rl_modulename_refresh);
         mRefreshLayout.setDelegate(this);
@@ -67,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements BGARefreshLayout.
         viewholder.setPullDownRefreshText("");
         viewholder.setReleaseRefreshText("");
         mRefreshLayout.setRefreshViewHolder(viewholder);
-
         mLoadingDialog = new ProgressDialog(this);
         mLoadingDialog.setCanceledOnTouchOutside(false);
         mLoadingDialog.setMessage("Loading...");
@@ -115,9 +121,52 @@ public class MainActivity extends AppCompatActivity implements BGARefreshLayout.
             public void onClick(View v) {
                 searchFAB.setVisibility(View.VISIBLE);
                 searcView.setVisibility(View.GONE);
+                searchEditText.setText("");
             }
         });
     }
+
+    private void textSearchListener(){
+        searchEditText = (EditText) findViewById(R.id.search_edit_text);
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                final List<EventListData> filteredModelList = filter(MainActivity.getEventListData(), s.toString());
+                eventListAdapter.animateTo(filteredModelList);
+                eventsList.scrollToPosition(0);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+    private List<EventListData> filter(List<EventListData> models, String query) {
+        query = query.toLowerCase();
+
+        final List<EventListData> filteredModelList = new ArrayList<>();
+        for (EventListData model : models) {
+            final String fromText = model.from.toLowerCase();
+            final String titleText = model.title.toLowerCase();
+            final String toText = model.to.toLowerCase();
+
+            if (titleText.contains(query)) {
+                filteredModelList.add(model);
+            }else if (toText.contains(query)) {
+                filteredModelList.add(model);
+            }else if (fromText.contains(query)) {
+                filteredModelList.add(model);
+            }
+        }
+        return filteredModelList;
+    }
+
 
     @Override
     public void onClick(View v) {
