@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.bikerscalender.EvenDialogBox.EventDialog;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements BGARefreshLayout.
     private Button cancelSearchButton;
     private EditText searchEditText;
     public FloatingActionButton searchFAB;
+    FragmentManager fm = getSupportFragmentManager();
 
     public static Integer[] mThumbIds = {
             R.drawable.a, R.drawable.d, R.drawable.c
@@ -77,6 +81,17 @@ public class MainActivity extends AppCompatActivity implements BGARefreshLayout.
         mLoadingDialog = new ProgressDialog(this);
         mLoadingDialog.setCanceledOnTouchOutside(false);
         mLoadingDialog.setMessage("Loading...");
+
+        eventsList.addOnItemTouchListener(
+            new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    Log.d("here", "testing on click");
+                    EventDialog eventDialog = new EventDialog();
+                    eventDialog.show(fm, "Dialog");
+                }
+            })
+        );
     }
 
     public static List<EventListData> getEventListData(){

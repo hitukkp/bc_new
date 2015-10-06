@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/lbl_your_name"
+        android:text="By default, the back button will dismiss the dialog without any additional code.Description of Text There are a few things to notice here. First, because we’re using the support library for backward compatibility with the Fragment API, our Activity extends FragmentActivity from the support library. Because we’re using the support library, we call getSupportFragmentManager() instead of getFragmentManager().After loading the initial view, the activity immediately shows the EditNameDialog by calling its show() method. This allows the DialogFragment to ensure that what is happening with the Dialog and Fragment states remains consistent. By default, the back button will dismiss the dialog without any additional code. shows the EditNameDialog by calling its show() method. This allows the DialogFragment to ensure that what is happening with the Dialog and Fragment states remains consistent. By default, the back button will dismiss the dialog without any additional code.shows the EditNameDialog by calling its show() method. This allows the DialogFragment to ensure that what is happening with the Dialog and Fragment states remains consistent. By default, the back button will dismiss the dialog without any additional code.shows the EditNameDialog by calling its show() method. This allows the DialogFragment to ensure that what is happening with the Dialog and Fragment states remains consistent. By default, the back button will dismiss the dialog without any additional code."
+        android:layout_width="wrap_content"
+        android:scrollbars="vertical"
+        android:maxLines="20"
+        android:ellipsize="end"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="OK" />
+
+</LinearLayout>
