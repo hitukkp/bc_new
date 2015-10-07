@@ -1,16 +1,14 @@
 package com.bikerscalender;
 
 import android.app.ProgressDialog;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -27,22 +25,19 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
-import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
-public class MainActivity extends AppCompatActivity implements BGARefreshLayout.BGARefreshLayoutDelegate, FloatingActionButton.OnClickListener {
+public class MainActivity extends AppCompatActivity implements FloatingActionButton.OnClickListener, AppBarLayout.OnOffsetChangedListener {
 
     public RecyclerView eventsList;
     private EventListAdapter eventListAdapter;
-    private List<EventListData> eventListData;
 
-    private int mNewPageNumber = 0;
-    public BGARefreshLayout mRefreshLayout;
-    protected ProgressDialog mLoadingDialog;
     private View searcView;
     private Button cancelSearchButton;
     private EditText searchEditText;
     public FloatingActionButton searchFAB;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private AppBarLayout appBarLayout;
+
     FragmentManager fm = getSupportFragmentManager();
 
     public static Integer[] mThumbIds = {
@@ -69,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements BGARefreshLayout.
         collapsingToolbar.setTitle("Travel Limitless");
         loadBackdrop();
         collapsingToolbar.setContentScrimColor(getResources().getColor(R.color.toolbar_background));
+
         /*ImageView image = (ImageView) findViewById(R.id.backdrop);
         Bitmap bitmap = ((BitmapDrawable)image.getDrawable()).getBitmap();
         Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
@@ -85,16 +81,22 @@ public class MainActivity extends AppCompatActivity implements BGARefreshLayout.
         cancelSearchClick();
         textSearchListener();
 
-        mRefreshLayout = (BGARefreshLayout) findViewById(R.id.rl_modulename_refresh);
-        mRefreshLayout.setDelegate(this);
-        BGANormalRefreshViewHolder viewholder = new BGANormalRefreshViewHolder(this, false); // false is to disable footer loading
-        viewholder.setRefreshingText("");
-        viewholder.setPullDownRefreshText("");
-        viewholder.setReleaseRefreshText("");
-        mRefreshLayout.setRefreshViewHolder(viewholder);
-        mLoadingDialog = new ProgressDialog(this);
-        mLoadingDialog.setCanceledOnTouchOutside(false);
-        mLoadingDialog.setMessage("Loading...");
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.contentView);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.toolbar_background);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 1000);
+            }
+        });
+
+        appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
 
         eventsList.addOnItemTouchListener(
             new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
@@ -205,43 +207,24 @@ public class MainActivity extends AppCompatActivity implements BGARefreshLayout.
         }
     }
 
-    @Override
-    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout bgaRefreshLayout) {
-        mNewPageNumber++;
-        if (mNewPageNumber > 4) {
-            mRefreshLayout.endRefreshing();
-            showToast("There are no recent data the");
-            return;
-        }
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mRefreshLayout.endRefreshing();
-            }
-        }, 1000);
-    }
-
-    @Override
-    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout bgaRefreshLayout) {
-        /*mNewPageNumber++;
-        if (mNewPageNumber > 5) {
-            mRefreshLayout.endLoadingMore();
-            showToast("No more data the");
-            return false;
-        }
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mRefreshLayout.endLoadingMore();
-            }
-        }, 1000);
-        return true;*/
-        return true;
-    }
-
     protected void showToast(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
+        mSwipeRefreshLayout.setEnabled(i==0);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        appBarLayout.addOnOffsetChangedListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        appBarLayout.removeOnOffsetChangedListener(this);
     }
 }
