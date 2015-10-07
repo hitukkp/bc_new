@@ -1,12 +1,16 @@
 package com.bikerscalender;
 
 import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -61,9 +65,19 @@ public class MainActivity extends AppCompatActivity implements BGARefreshLayout.
 
         searcView = findViewById(R.id.search_view_ll);
 
-        CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle("Tourer");
+        final CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbar.setTitle("Travel Limitless");
         loadBackdrop();
+        collapsingToolbar.setContentScrimColor(getResources().getColor(R.color.toolbar_background));
+        /*ImageView image = (ImageView) findViewById(R.id.backdrop);
+        Bitmap bitmap = ((BitmapDrawable)image.getDrawable()).getBitmap();
+        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+            @Override
+            public void onGenerated(Palette palette) {
+                int mutedColor = palette.getMutedColor(0x000000);
+                collapsingToolbar.setContentScrimColor(mutedColor);
+            }
+        });*/
 
         searchFAB = (FloatingActionButton) findViewById(R.id.search_button);
         searchFAB.setOnClickListener(this);
