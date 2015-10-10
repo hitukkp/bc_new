@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.bikerscalender.EvenDialogBox.EventDialog;
 import com.bumptech.glide.Glide;
+import com.ms.square.android.expandabletextview.ExpandableTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,7 +103,6 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
             new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    Log.d("here", "testing on click");
                     EventDialog eventDialog = new EventDialog();
                     eventDialog.show(fm, "Dialog");
                 }

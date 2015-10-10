@@ -2,46 +2,189 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="300dp"
-    android:layout_height="400dp">
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/scroll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:scaleType="centerCrop"
                 android:fitsSystemWindows="true"
                 app:layout_collapseMode="parallax"
-                android:src="@drawable/a"
+                android:src="@drawable/c"
                 android:minHeight="80dp"/>
 
-            <TextView
-                android:id="@+id/lbl_your_name"
-                android:text="By default, the back button will dismiss the dialog without any additional code.Description of Text There are a few things to notice here. First, because we’re using the support library for backward compatibility with the Fragment API, our Activity extends FragmentActivity from the support library. Because we’re using the support library, we call getSupportFragmentManager() instead of getFragmentManager().After loading the initial view, the activity immediately shows the EditNameDialog by calling its show() method. This allows the DialogFragment to ensure that what is happening with the Dialog and Fragment states remains consistent. By default, the back button will dismiss the dialog without any additional code. shows the EditNameDialog by calling its show() method. This allows the DialogFragment to ensure that what is happening with the Dialog and Fragment states remains consistent. By default, the back button will dismiss the dialog without any additional code.shows the EditNameDialog by calling its show() method. This allows the DialogFragment to ensure that what is happening with the Dialog and Fragment states remains consistent. By default, the back button will dismiss the dialog without any additional code.shows the EditNameDialog by calling its show() method. This allows the DialogFragment to ensure that what is happening with the Dialog and Fragment states remains consistent. By default, the back button will dismiss the dialog without any additional code."
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:layout_width="wrap_content"
-                android:scrollbars="vertical"
-                android:maxLines="20"
-                android:ellipsize="end"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
 
+                <TextView
+                    android:id="@+id/dialog_title_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="20sp"
+                    android:singleLine="true"
+                    android:text="BIKERS vs WILD ( Season - 11 ) - SAACH PASS"
+                    android:paddingTop="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"/>
+
+                <RelativeLayout
+                    android:id="@+id/ll1_id"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+                    <ImageView
+                        android:id="@+id/location_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:src="@drawable/loc_5"/>
+                    <TextView
+                        android:id="@+id/from_id"
+                        android:layout_toRightOf="@id/location_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:textSize="13sp"
+                        android:text="Delhi"
+                        android:textColor="#747C92"/>
+                    <ImageView
+                        android:id="@+id/between_img"
+                        android:layout_toRightOf="@id/from_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:src="@drawable/dir_15"/>
+                    <TextView
+                        android:id="@+id/to_id"
+                        android:layout_toRightOf="@id/between_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:singleLine="true"
+                        android:textSize="13sp"
+                        android:text="Sach Pass"
+                        android:textColor="#747C92"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/ll2_id"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="1dp"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+                    <ImageView
+                        android:id="@+id/time_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:src="@drawable/tim_6"/>
+                    <TextView
+                        android:id="@+id/start_date_id"
+                        android:layout_toRightOf="@id/time_img"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:textSize="12sp"
+                        android:text="20-Dec-2015 17:30"
+                        android:textColor="#747C92"/>
+
+                    <TextView
+                        android:id="@+id/time_total_id"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:textSize="12sp"
+                        android:text="17days"
+                        android:textColor="#747C92"/>
+
+                    <ImageView
+                        android:id="@+id/time_total_img"
+                        android:layout_toLeftOf="@id/time_total_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:src="@drawable/tim_13"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/event_link_button"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:src="@drawable/link_icon1"/>
+
+            <LinearLayout
+                android:id="@+id/dialog_expand_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <com.ms.square.android.expandabletextview.ExpandableTextView
+                    xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/expand_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    expandableTextView:maxCollapsedLines="4"
+                    expandableTextView:animDuration="200">
+                    <TextView
+                        android:id="@+id/expandable_text"
+                        android:text="By default, the back button will dismiss the dialog without any additional code.Description of Text There are a few things to notice here. First, because we’re using the support library for backward compatibility with the Fragment API, our Activity extends FragmentActivity from the support library. Because we’re using the support library, we call getSupportFragmentManager() instead of getFragmentManager().After loading the initial view, the activity immediately shows the EditNameDialog by calling its show() method. This allows the DialogFragment to ensure that what is happening with the Dialog and Fragment states remains consistent. By default, the back button will dismiss the dialog without any additional code. shows the EditNameDialog by calling its show() method. This allows the DialogFragment to ensure that what is happening with the Dialog and Fragment states remains consistent. By default, the back button will dismiss the dialog without any additional code.shows the EditNameDialog by calling its show() method. This allows the DialogFragment to ensure that what is happening with the Dialog and Fragment states remains consistent. By default, the back button will dismiss the dialog without any additional code.shows the EditNameDialog by calling its show() method. This allows the DialogFragment to ensure that what is happening with the Dialog and Fragment states remains consistent. By default, the back button will dismiss the dialog without any additional code."
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:textSize="14sp"
+                        android:textColor="#666666" />
+                    <ImageButton
+                        android:id="@id/expand_collapse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:layout_gravity="right|bottom"
+                        android:background="@android:color/transparent"/>
+                </com.ms.square.android.expandabletextview.ExpandableTextView>
+            </LinearLayout>
         </LinearLayout>
 
-    </android.support.v4.widget.NestedScrollView>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="OK" />
+    </ScrollView>
 
 </LinearLayout>
