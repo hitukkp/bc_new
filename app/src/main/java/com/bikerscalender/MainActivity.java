@@ -1,6 +1,5 @@
 package com.bikerscalender;
 
-import android.app.ProgressDialog;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -21,11 +20,19 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bikerscalender.EvenDialogBox.EventDialog;
+import com.bikerscalender.HttpConnect.ApiUrls;
+import com.bikerscalender.HttpConnect.HttpServiceProvider;
+import com.bikerscalender.JsonToJavaObjDir.EventDetails;
+import com.bikerscalender.JsonToJavaObjDir.ResultData;
 import com.bumptech.glide.Glide;
-import com.ms.square.android.expandabletextview.ExpandableTextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class MainActivity extends AppCompatActivity implements FloatingActionButton.OnClickListener, AppBarLayout.OnOffsetChangedListener {
 
@@ -38,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
     public FloatingActionButton searchFAB;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private AppBarLayout appBarLayout;
+    private static final String BASE_DOMAIN = "http://myroomi.com";
 
     FragmentManager fm = getSupportFragmentManager();
 
@@ -82,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
         cancelSearchClick();
         textSearchListener();
 
+        getEvents();
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.contentView);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.toolbar_background);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -100,14 +109,15 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
         appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
 
         eventsList.addOnItemTouchListener(
-            new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                    EventDialog eventDialog = new EventDialog();
-                    eventDialog.show(fm, "Dialog");
-                }
-            })
+                new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        EventDialog eventDialog = new EventDialog();
+                        eventDialog.show(fm, "Dialog");
+                    }
+                })
         );
+
     }
 
     public static List<EventListData> getEventListData(){
@@ -127,6 +137,28 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
             eventListData.add(current);
         }
         return eventListData;
+    }
+
+    private void getEvents(){
+
+        ApiUrls client = HttpServiceProvider.createService( ApiUrls.class, BASE_DOMAIN );
+        try {
+            Call<ResultData> call = client.getEvents("testsapis");
+            call.enqueue(new Callback<ResultData>() {
+                @Override
+                public void onResponse(Response<ResultData> response, Retrofit retrofit) {
+                    ResultData dataSet = response.body();
+                    logresult(dataSet.getMessage());
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    Log.d("hiteshtest", t.toString());
+                }
+            });
+        } catch (Throwable e){
+            Log.d("Error Here", e.toString());
+        }
     }
 
     private void loadBackdrop() {
@@ -209,6 +241,10 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
 
     protected void showToast(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
+
+    protected void logresult(String text){
+        Log.d("hiteshtest", text);
     }
 
     @Override

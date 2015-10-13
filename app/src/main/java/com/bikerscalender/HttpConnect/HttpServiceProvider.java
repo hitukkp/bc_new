@@ -1,5 +1,6 @@
 package com.bikerscalender.HttpConnect;
 
+import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
 /**
@@ -8,7 +9,11 @@ import retrofit.Retrofit;
 public class HttpServiceProvider {
 
     public static <S> S createService(Class<S> serviceClass, String baseUrl) {
-        Retrofit builder = new Retrofit.Builder().baseUrl(baseUrl).build();
+        Retrofit builder = new Retrofit
+                .Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
         return builder.create(serviceClass);
     }
 }
