@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by applect on 2/9/15.
+ * Created by Hitesh Goel on 2/9/15.
  */
 
 public class EventListAdapter extends RecyclerView.Adapter <EventListAdapter.EventListViewHolder> {

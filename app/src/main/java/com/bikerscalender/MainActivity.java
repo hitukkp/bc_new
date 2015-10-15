@@ -34,17 +34,17 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class MainActivity extends AppCompatActivity implements FloatingActionButton.OnClickListener, AppBarLayout.OnOffsetChangedListener {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, FloatingActionButton.OnClickListener, AppBarLayout.OnOffsetChangedListener {
 
     public RecyclerView eventsList;
-    private EventListAdapter eventListAdapter;
-
+    private static EventListAdapter eventListAdapter;
     private View searcView;
     private Button cancelSearchButton;
     private EditText searchEditText;
     public FloatingActionButton searchFAB;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private static SwipeRefreshLayout mSwipeRefreshLayout;
     private AppBarLayout appBarLayout;
+    public static final List<EventListData> eventListData = new ArrayList<>();
     private static final String BASE_DOMAIN = "http://myroomi.com";
 
     FragmentManager fm = getSupportFragmentManager();
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
         setContentView(R.layout.activity_main);
 
         eventsList = (RecyclerView) findViewById(R.id.events_list);
-        eventListAdapter = new EventListAdapter(this, getEventListData());
+        eventListAdapter = new EventListAdapter(this, eventListData);
         eventsList.setAdapter(eventListAdapter);
         eventsList.setLayoutManager(new LinearLayoutManager(this));
 
@@ -90,21 +90,23 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
         cancelSearchClick();
         textSearchListener();
 
-        getEvents();
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.contentView);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.toolbar_background);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
+        mSwipeRefreshLayout.setOnRefreshListener(this);
 
-                new Handler().postDelayed(new Runnable() {
+        /**
+         * Showing Swipe Refresh animation on activity create
+         * As animation won't start on onCreate, post runnable is used
+         */
+        mSwipeRefreshLayout.post(
+                new Runnable() {
                     @Override
                     public void run() {
-                        mSwipeRefreshLayout.setRefreshing(false);
+                        mSwipeRefreshLayout.setRefreshing(true);
+                        getEvents();
                     }
-                }, 1000);
-            }
-        });
+                }
+        );
 
         appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
 
@@ -117,7 +119,11 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
                     }
                 })
         );
+    }
 
+    @Override
+    public void onRefresh() {
+        getEvents();
     }
 
     public static List<EventListData> getEventListData(){
@@ -136,24 +142,44 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
             current.total_time = totalTime[i];
             eventListData.add(current);
         }
+        eventListAdapter.notifyDataSetChanged();
         return eventListData;
     }
 
     private void getEvents(){
 
-        ApiUrls client = HttpServiceProvider.createService( ApiUrls.class, BASE_DOMAIN );
+        // showing refresh animation before making http call
+        mSwipeRefreshLayout.setRefreshing(true);
         try {
+            ApiUrls client = HttpServiceProvider.createService( ApiUrls.class, BASE_DOMAIN );
             Call<ResultData> call = client.getEvents("testsapis");
             call.enqueue(new Callback<ResultData>() {
                 @Override
                 public void onResponse(Response<ResultData> response, Retrofit retrofit) {
                     ResultData dataSet = response.body();
-                    logresult(dataSet.getMessage());
+                    List<EventDetails> listData = dataSet.getData();
+                    for(EventDetails object : listData){
+                        EventListData current = new EventListData();
+                        current.title = object.getTitle();
+                        current.from = object.getFromLocation();
+                        current.to = object.getToLocation();
+                        current.start_date = object.getSrartTime();
+                        current.total_time = "17d 3h 5m 6s";
+                        eventListData.add(current);
+                    }
+                    eventListAdapter.notifyDataSetChanged();
+
+                    // hiding refresh animation before making http call
+                    mSwipeRefreshLayout.setRefreshing(false);
                 }
 
                 @Override
                 public void onFailure(Throwable t) {
-                    Log.d("hiteshtest", t.toString());
+
+                    // hiding refresh animation before making http call
+                    showToast("Server Error");
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    logresult(t.toString());
                 }
             });
         } catch (Throwable e){
@@ -199,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                final List<EventListData> filteredModelList = filter(MainActivity.getEventListData(), s.toString());
+                final List<EventListData> filteredModelList = filter(MainActivity.eventListData, s.toString());
                 eventListAdapter.animateTo(filteredModelList);
                 eventsList.scrollToPosition(0);
             }
@@ -243,13 +269,13 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
-    protected void logresult(String text){
+    protected static void logresult(String text){
         Log.d("hiteshtest", text);
     }
 
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
-        mSwipeRefreshLayout.setEnabled(i==0);
+        mSwipeRefreshLayout.setEnabled(i == 0);
     }
 
     @Override
