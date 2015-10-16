@@ -114,7 +114,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        EventDialog eventDialog = new EventDialog();
+                        EventListData currentObj = eventListData.get(position);
+                        EventDialog eventDialog = new EventDialog( currentObj );
                         eventDialog.show(fm, "Dialog");
                     }
                 })
@@ -164,6 +165,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         current.from = object.getFromLocation();
                         current.to = object.getToLocation();
                         current.start_date = object.getSrartTime();
+                        current.image_url = object.getImgSrc();
                         current.total_time = "17d 3h 5m 6s";
                         eventListData.add(current);
                     }
