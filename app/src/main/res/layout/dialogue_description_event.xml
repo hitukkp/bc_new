@@ -45,6 +45,35 @@
                     android:paddingRight="10dp"/>
 
                 <RelativeLayout
+                    android:id="@+id/rl2_id"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+                    <ImageView
+                        android:id="@+id/group_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:src="@drawable/group_img"/>
+                    <TextView
+                        android:id="@+id/dialog_group_name"
+                        android:layout_toRightOf="@id/group_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:textSize="15sp"
+                        android:text="Delhi Bikers Adventure Tour Group"
+                        android:textColor="#584B53"/>
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:id="@+id/ll1_id"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
@@ -61,7 +90,7 @@
                         android:paddingRight="5dp"
                         android:src="@drawable/loc_5"/>
                     <TextView
-                        android:id="@+id/from_id"
+                        android:id="@+id/dialog_from_id"
                         android:layout_toRightOf="@id/location_img"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -73,14 +102,14 @@
                         android:textColor="#747C92"/>
                     <ImageView
                         android:id="@+id/between_img"
-                        android:layout_toRightOf="@id/from_id"
+                        android:layout_toRightOf="@id/dialog_from_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:src="@drawable/dir_15"/>
                     <TextView
-                        android:id="@+id/to_id"
+                        android:id="@+id/dialog_to_id"
                         android:layout_toRightOf="@id/between_img"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -108,7 +137,7 @@
                         android:paddingRight="5dp"
                         android:src="@drawable/tim_6"/>
                     <TextView
-                        android:id="@+id/start_date_id"
+                        android:id="@+id/dialog_start_date_id"
                         android:layout_toRightOf="@id/time_img"
                         android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical"
@@ -121,7 +150,7 @@
                         android:textColor="#747C92"/>
 
                     <TextView
-                        android:id="@+id/time_total_id"
+                        android:id="@+id/dialog_time_total_id"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical"
@@ -135,7 +164,7 @@
 
                     <ImageView
                         android:id="@+id/time_total_img"
-                        android:layout_toLeftOf="@id/time_total_id"
+                        android:layout_toLeftOf="@id/dialog_time_total_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="5dp"

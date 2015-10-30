@@ -25,6 +25,35 @@
             android:paddingRight="10dp"/>
 
         <RelativeLayout
+            android:id="@+id/rl1_id"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+            <ImageView
+                android:id="@+id/group_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:src="@drawable/group_img"/>
+            <TextView
+                android:id="@+id/group_name"
+                android:layout_toRightOf="@id/group_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textSize="15sp"
+                android:text="Delhi Bikers Adventure Tour Group"
+                android:textColor="#584B53"/>
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/ll1_id"
             android:orientation="horizontal"
             android:layout_width="match_parent"

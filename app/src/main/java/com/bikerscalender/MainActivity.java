@@ -1,6 +1,5 @@
 package com.bikerscalender;
 
-import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -127,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         getEvents();
     }
 
+    /*
     public static List<EventListData> getEventListData(){
         List<EventListData> eventListData = new ArrayList<>();
         String[] titles = {"BIKERS vs WILD ( Season - 11 ) - SAACH PASS", "BIKERS vs WILD ( Season - 11 ) - SAACH PASS", "BIKERS vs WILD ( Season - 11 ) - SAACH PASS", "BIKERS vs WILD ( Season - 11 ) - SAACH PASS"};
@@ -146,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         eventListAdapter.notifyDataSetChanged();
         return eventListData;
     }
+    */
 
     private void getEvents(){
 
@@ -166,6 +167,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         current.to = object.getToLocation();
                         current.start_date = object.getSrartTime();
                         current.image_url = object.getImgSrc();
+                        current.url_link = object.getEventUrl();
+                        current.description = object.getDescription();
                         current.total_time = "17d 3h 5m 6s";
                         eventListData.add(current);
                     }
@@ -177,7 +180,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 @Override
                 public void onFailure(Throwable t) {
-
                     // hiding refresh animation before making http call
                     showToast("Server Error");
                     mSwipeRefreshLayout.setRefreshing(false);

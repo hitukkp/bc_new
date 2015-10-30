@@ -2,7 +2,6 @@ package com.bikerscalender.EvenDialogBox;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.bikerscalender.EventListData;
 

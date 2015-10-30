@@ -1,6 +1,8 @@
 package com.bikerscalender.EvenDialogBox;
 
 import android.app.Dialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
@@ -39,6 +41,35 @@ public class MyCustomDialog extends DialogFragment {
         ImageView dialogImage = (ImageView) rootView.findViewById(R.id.dialog_image_view);
         Glide.with(this).load(currentEventDetails.getImageUrlLink()).centerCrop().into(dialogImage);
 
+        TextView dialogTitleBox = (TextView) rootView.findViewById(R.id.dialog_title_id);
+        dialogTitleBox.setText(currentEventDetails.getTitle());
+
+        TextView dialogGroupName = (TextView) rootView.findViewById(R.id.dialog_group_name);
+        dialogGroupName.setText(currentEventDetails.getGroupName());
+
+        TextView dialogFromLocation = (TextView) rootView.findViewById(R.id.dialog_from_id);
+        dialogFromLocation.setText(currentEventDetails.getFromLocation());
+
+        TextView dialogToLocation = (TextView) rootView.findViewById(R.id.dialog_to_id);
+        dialogToLocation.setText(currentEventDetails.getToLocation());
+
+        TextView dialogStartDate = (TextView) rootView.findViewById(R.id.dialog_start_date_id);
+        dialogStartDate.setText(currentEventDetails.getStartDate());
+
+        TextView dialogTotalTime = (TextView) rootView.findViewById(R.id.dialog_time_total_id);
+        dialogTotalTime.setText(currentEventDetails.getTotalTime());
+
+        ImageView img = (ImageView)rootView.findViewById(R.id.event_link_button);
+        img.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                intent.setData(Uri.parse(currentEventDetails.getUrlLink()));
+                startActivity(intent);
+            }
+        });
+
         ExpandableTextView expTv1 = (ExpandableTextView) rootView.findViewById(R.id.dialog_expand_view).findViewById(R.id.expand_text_view);
         expTv1.setOnExpandStateChangeListener(new ExpandableTextView.OnExpandStateChangeListener() {
             @Override
@@ -46,7 +77,7 @@ public class MyCustomDialog extends DialogFragment {
 
             }
         });
-        expTv1.setText(getString(R.string.dummy_desc));
+        expTv1.setText(currentEventDetails.getDescription());
         return rootView;
     }
 

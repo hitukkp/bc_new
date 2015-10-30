@@ -52,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -74,7 +74,7 @@
                 android:orientation="horizontal"
                 android:layout_weight="1"
                 android:paddingLeft="10dp"
-                android:drawablePadding="10dp"
+                android:drawablePadding="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginRight="5dp"
@@ -104,7 +104,7 @@
                 android:id="@+id/events_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="20dp">
+                android:paddingTop="10dp">
             </android.support.v7.widget.RecyclerView>
 
         </android.support.v4.widget.SwipeRefreshLayout>

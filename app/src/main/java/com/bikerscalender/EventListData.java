@@ -11,10 +11,10 @@ public class EventListData {
     String total_time;
     String url_link;
     String image_url;
+    String description;
+    String group_name;
 
-    public String getTitle(){
-        return this.title;
-    }
+    public String getTitle(){ return this.title; }
 
     public String getStartDate(){
         return this.start_date;
@@ -32,7 +32,19 @@ public class EventListData {
         return this.url_link;
     }
 
+    public String getTotalTime(){
+        return this.total_time;
+    }
+
     public String getImageUrlLink(){
         return this.image_url;
+    }
+
+    public String getDescription(){
+        return this.description;
+    }
+
+    public String getGroupName(){
+        return this.group_name;
     }
 }
